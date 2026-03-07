@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Friend Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+text-align:center;
+background:linear-gradient(45deg,#ff758c,#ff7eb3,#ffb199);
+color:white;
+overflow:hidden;
+}
+
+.page{
+display:none;
+min-height:100vh;
+justify-content:flex-start;
+align-items:center;
+flex-direction:column;
+padding:20px;
+}
+
+.active{
+display:flex;
+}
+
+.photo{
+width:220px;
+height:220px;
+border-radius:50%;
+border:6px solid white;
+object-fit:cover;
+animation:floatPhoto 3s infinite;
+}
+
+@keyframes floatPhoto{
+0%{transform:translateY(0)}
+50%{transform:translateY(-20px)}
+100%{transform:translateY(0)}
+}
+
+button{
+padding:12px 20px;
+margin:10px;
+font-size:18px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+transition:0.2s;
+}
+
+button:active{
+transform:scale(0.9);
+}
+
+.play{background:red;color:white;font-weight:bold}
+.surprise{background:purple;color:white;font-weight:bold}
+.message{background:green;color:white;font-weight:bold}
+.yes{background:#00c853;color:white}
+.no{background:#d50000;color:white}
+
+.question{
+margin:15px;
+font-size:22px;
+}
+
+select{
+padding:10px;
+font-size:16px;
+border-radius:10px;
+border:none;
+margin-top:8px;
+}
+
+/* HEART GAME */
+
+#boxes{
+display:grid;
+grid-template-columns:repeat(3,100px);
+gap:15px;
+margin-top:20px;
+}
+
+.box{
+width:100px;
+height:100px;
+background:white;
+border-radius:15px;
+cursor:pointer;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:40px;
+color:black;
+}
+
+#yesMove{
+position:relative;
+}
+
+/* GIFT BOX */
+
+.giftBox{
+font-size:80px;
+cursor:pointer;
+animation:giftJump 1s infinite;
+}
+
+@keyframes giftJump{
+0%{transform:translateY(0)}
+50%{transform:translateY(-15px)}
+100%{transform:translateY(0)}
+}
+
+/* HEART RAIN */
+
+.heart{
+position:fixed;
+top:-10px;
+font-size:22px;
+animation:fall 6s linear infinite;
+pointer-events:none;
+}
+
+.leaf{
+position:fixed;
+top:-10px;
+font-size:22px;
+animation:fall 8s linear infinite;
+pointer-events:none;
+}
+
+@keyframes fall{
+0%{
+transform:translateY(-10px);
+opacity:1;
+}
+100%{
+transform:translateY(100vh);
+opacity:0;
+}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- HOME -->
+
+<div id="home" class="page active">
+
+<h1>Hayy My Dear Best Friend ❤️</h1>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<img class="photo" src="elai.jpg">
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<div>
+
+<button class="play" onclick="showPage('game')">🎮 Play Friend Game</button>
+
+<button class="surprise" onclick="showPage('surpriseGame')">💖 Surprise</button>
+
+<button class="message" onclick="showPage('msgGame')">💌 Message</button>
+
+</div>
+
+</div>
+
+<!-- FRIEND GAME -->
+
+<div id="game" class="page">
+
+<h2>My Questions ❤️</h2>
+
+<div class="question">
+1. Na unakku yaaru?
+<br>
+<select id="q1">
+<option>Just Friend</option>
+<option>Best Friend</option>
+<option>Close Person</option>
+<option>Special Person</option>
+<option>My Favourite Person ❤️</option>
+</select>
+</div>
+
+<div class="question">
+2. Unakku ennai ya evlo pudikkum?
+<br>
+<select id="q2">
+<option>Konjam</option>
+<option>Little Bit</option>
+<option>More</option>
+<option>Very Much</option>
+<option>Infinity ❤️</option>
+</select>
+</div>
+
+<div class="question">
+3. En kooda pesina epdi feel aagum?
+<br>
+<select id="q3">
+<option>Normal</option>
+<option>Happy</option>
+<option>Very Happy</option>
+<option>Excited</option>
+<option>Super Special ❤️</option>
+</select>
+</div>
+
+<div class="question">
+4.“Naan unnai ‘di’ nu koopidalaama?”
+<br>
+<select id="q4">
+<option>Yes</option>
+<option>No</option>
+<option>just oru murai</option>
+<option>Always</option>
+<option>Immediately ❤️</option>
+</select>
+</div>
+
+<div class="question">
+5. Na un life la important ah?
+<br>
+<select id="q5">
+<option>Not Much</option>
+<option>Little</option>
+<option>Important</option>
+<option>Very Important</option>
+<option>Most Important ❤️</option>
+</select>
+</div>
+
+<div class="question">
+6. Friendship continue pannuveengala?
+<br>
+<select id="q6">
+<option>Maybe</option>
+<option>Sometimes</option>
+<option>Yes</option>
+<option>Definitely</option>
+<option>Forever ❤️</option>
+</select>
+</div>
+
+<button class="play" onclick="submitGame()">Submit</button>
+
+</div>
+
+<!-- RESULT -->
+
+<div id="result" class="page">
+<br>
+<br><br>
+<br>
+<br>
+<br>
+<h2>Your Answers ❤️</h2>
+
+<div id="resultText"></div>
+<br>
+<button class="play" onclick="sendEmail()">Send Email 📧</button>
+<br>
+<br>
+<br>
+<button class="play" onclick="showPage('fun')">Play Fun Game 🎮</button>
+
+</div>
+
+<!-- FUN GAME -->
+
+<div id="fun" class="page">
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h2>Are you in love with me? 😍</h2>
+
+<button id="yesMove" class="yes">YES ❤️</button>
+
+<button class="no" onclick="noClick()">NO 💔</button>
+
+<div id="funMsg"></div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<button class="play" onclick="showPage('home')">⬅ Back</button>
+
+</div>
+
+<!-- SURPRISE GAME -->
+
+<div id="surpriseGame" class="page">
+
+<h2>Find My Heart ❤️</h2>
+
+<p>One box has my heart. Find it 😍</p>
+
+<div id="boxes">
+
+<div class="box" onclick="checkBox(0)"></div>
+<div class="box" onclick="checkBox(1)"></div>
+<div class="box" onclick="checkBox(2)"></div>
+<div class="box" onclick="checkBox(3)"></div>
+<div class="box" onclick="checkBox(4)"></div>
+<div class="box" onclick="checkBox(5)"></div>
+
+</div>
+
+<h3 id="gameMsg"></h3>
+
+<button class="play" onclick="showPage('home')">Back</button>
+
+</div>
+
+<!-- MESSAGE PAGE -->
+
+<div id="msgGame" class="page">
+
+<h2>Message 💌</h2>
+
+<p>Special gift waiting for you 🎁</p>
+<p>Click the gift box below</p>
+
+<div class="giftBox" onclick="openGift()">🎁</div>
+
+<h3 id="giftMsg"></h3>
+
+<button class="play" onclick="showPage('home')">Back</button>
+
+</div>
+
+<script>
+
+function showPage(p){
+document.querySelectorAll(".page").forEach(x=>x.classList.remove("active"))
+document.getElementById(p).classList.add("active")
+}
+
+let answerText=""
+
+/* SUBMIT */
+
+function submitGame(){
+
+let q1=document.getElementById("q1").value
+let q2=document.getElementById("q2").value
+let q3=document.getElementById("q3").value
+let q4=document.getElementById("q4").value
+let q5=document.getElementById("q5").value
+let q6=document.getElementById("q6").value
+
+answerText=`
+Q1 : ${q1}
+Q2 : ${q2}
+Q3 : ${q3}
+Q4 : ${q4}
+Q5 : ${q5}
+Q6 : ${q6}
+`
+
+document.getElementById("resultText").innerHTML=answerText.replace(/\n/g,"<br>")
+
+showPage("result")
+
+}
+
+/* EMAIL */
+
+function sendEmail(){
+
+let subject="Friend Game Answer"
+let body="My Answers:\n\n"+answerText
+
+window.location.href=
+"mailto:sanjaisanjaii2006@gmail.com?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body)
+
+}
+
+/* YES MOVE GAME */
+
+let yes=document.getElementById("yesMove")
+
+function moveYes(){
+yes.style.left=Math.random()*200-100+"px"
+yes.style.top=Math.random()*200-100+"px"
+}
+
+yes.addEventListener("mouseover",moveYes)
+
+setInterval(moveYes,3000)
+
+function noClick(){
+document.getElementById("funMsg").innerHTML="😢 Oh no! But I still like you ❤️"
+}
+
+/* HEART FIND GAME */
+
+let heartBox=Math.floor(Math.random()*6)
+
+function checkBox(n){
+
+let boxes=document.querySelectorAll(".box")
+
+if(n==heartBox){
+
+boxes[n].innerHTML="❤️"
+
+document.getElementById("gameMsg").innerHTML="You found my heart ❤️"
+
+}else{
+
+boxes[n].innerHTML="😜"
+
+document.getElementById("gameMsg").innerHTML="Try again!"
+
+}
+
+}
+
+/* GIFT MESSAGE */
+
+function openGift(){
+
+document.getElementById("giftMsg").innerHTML=
+"Hayy My Dear Elamathi ❤️<br>You are very special to me. Thank you for being my best friend 💖<br><hr><br><br><br><br>What is your gift for me?<br>Tell Me For Text!!" 
+
+}
+
+/* HEART RAIN */
+
+function createHeart(){
+
+let heart=document.createElement("div")
+heart.className="heart"
+heart.innerHTML="💖"
+heart.style.left=Math.random()*100+"vw"
+
+document.body.appendChild(heart)
+
+setTimeout(()=>{
+heart.remove()
+},6000)
+
+}
+
+setInterval(createHeart,400)
+
+/* LEAF RAIN */
+
+function createLeaf(){
+
+let leaf=document.createElement("div")
+leaf.className="leaf"
+leaf.innerHTML="🍃"
+leaf.style.left=Math.random()*100+"vw"
+
+document.body.appendChild(leaf)
+
+setTimeout(()=>{
+leaf.remove()
+},8000)
+
+}
+
+setInterval(createLeaf,600)
+
+</script>
+
+</body>
+</html>
